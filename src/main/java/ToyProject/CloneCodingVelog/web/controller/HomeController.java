@@ -17,13 +17,14 @@ public class HomeController {
 
     private final ArticleRepository articleRepository;
 
+    //TODO: 최신 글이 위로 오도록 해줘야 함.
     @GetMapping("/")
     public String home(Model model) {
         if (articleRepository != null) {
             List<Article> findArticles = articleRepository.findAll();
             model.addAttribute("articles", findArticles);
         }
-//        else {  //TODO: 글이 없을 때 안내가 안나옴. 알아볼것.
+//        else {  //TODO: 글이 없을 때 안내가 안나옴.
 //            model.addAttribute("articles", null);
 //        }
         return "home";
