@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/bootstrap.min.css"
+          th:href="|@{css/bootstrap.min.css}|"
+          rel="stylesheet">
+
+    <style>
+        .container {
+            max-width: 560px;
+        }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+
+<form th:action th:object="${addForm}" method="post">
+
+    <div>
+        <label for="title">제목</label>
+        <input id="title" th:field="*{title}">
+        <div th:errors="*{title}">제목을 입력하세요.</div>
+    </div>
+    <div>
+        <label for="text">내용</label>
+        <input id="text" th:field="*{text}">
+        <div th:errors="*{text}">내용을 입력하세요.</div>
+    </div>
+
+    <button type="submit">출간하기</button>
+    <button type="button" th:onclick="|location.href='/'|">나가기</button>
+</form>
+
+
+</body>
+</html>

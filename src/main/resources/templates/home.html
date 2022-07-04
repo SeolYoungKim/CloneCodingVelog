@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/bootstrap.min.css"
+          th:href="|@{css/bootstrap.min.css}|"
+          rel="stylesheet">
+
+    <style>
+        .container {
+            max-width: 560px;
+        }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>딱구의 블로그에 오신 것을 환영합니다.</h2>
+
+<div class="container" th:object="${articles}">
+
+    <div th:if="${articles} == null" th:text="'글이 없습니다.'"></div>
+
+    <div th:each="article : ${articles}">
+        <ul class="container">
+            <li><a th:href="@{/}" th:text="${article.title}"></a>
+                <a th:href="@{/}" th:text="${article.text}"></a></li>
+        </ul>
+    </div>
+
+    <button th:onclick="|location.href='/add'|" type="button">글 작성</button>
+
+</div>
+
+</body>
+</html>
