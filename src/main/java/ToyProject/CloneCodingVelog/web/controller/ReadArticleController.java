@@ -18,7 +18,7 @@ public class ReadArticleController {
 
     @GetMapping("/article/{id}")
     public String readArticle(@PathVariable Long id, Model model) {
-        if (id > articleRepository.findAll().size()) {
+        if (!articleRepository.hasId(id)) {
             throw new IllegalArgumentException();
         }
 

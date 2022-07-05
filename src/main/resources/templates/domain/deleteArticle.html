@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/bootstrap.min.css"
+          th:href="|@{css/bootstrap.min.css}|"
+          rel="stylesheet">
+
+    <style>
+        .container {
+            max-width: 560px;
+        }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+<h2>정말 삭제하시겠습니까?</h2>
+<form th:action method="post">
+    <button type="submit">확인</button>
+    <button type="button" th:onclick="|location.href='/article/' + ${id}|">취소</button>
+</form>
+
+</body>
+</html>

@@ -21,6 +21,11 @@ public class MemoryRepository implements ArticleRepository {
     Long sequence = 0L;
 
     @Override
+    public Boolean hasId(Long id) {
+        return repository.containsKey(id);
+    }
+
+    @Override
     public Article save(Article article) {
         repository.put(++sequence, article);
         article.setId(sequence);
@@ -35,6 +40,11 @@ public class MemoryRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return new ArrayList<>(repository.values());
+    }
+
+    @Override
+    public void delete(Long id) {
+        repository.remove(id);
     }
 
     // Test용 코드

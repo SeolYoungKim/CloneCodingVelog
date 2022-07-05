@@ -26,7 +26,7 @@ public class EditArticleController {
 
     @GetMapping("article/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
-        if (id > articleRepository.findAll().size()) {
+        if (!articleRepository.hasId(id)) {
             throw new IllegalArgumentException("잘못된 요청");
         }
 

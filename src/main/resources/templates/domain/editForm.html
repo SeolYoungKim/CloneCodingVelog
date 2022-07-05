@@ -23,12 +23,12 @@
 
   <form th:action method="post">
     <h2>
-      <input th:field="*{title}" th:placeholder="*{title}">
+      <input th:field="*{title}">
       <div th:errors="*{title}"></div>
     </h2>
 
     <div>
-      <input th:field="*{text}" th:placeholder="*{text}">
+      <input th:field="*{text}">
       <div th:errors="*{text}"></div>
     </div>
 
