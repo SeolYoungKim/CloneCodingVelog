@@ -7,7 +7,7 @@
     <link href="css/bootstrap.min.css"
           th:href="|@{css/bootstrap.min.css}|"
           rel="stylesheet">
-
+<!--TODO: 머리 식힐 때 CSS 적용 알아보기...^^-->
     <style>
         .container {
             max-width: 560px;
@@ -29,8 +29,8 @@
 
     <div th:each="article : ${articles}">
         <ul class="container">
-            <li><a th:href="@{/}" th:text="${article.title}"></a>
-                <a th:href="@{/}" th:text="${article.text}"></a></li>
+            <li><a th:href="@{/article/{id}(id=${article.id})}" th:text="${article.title}"></a>
+                <a th:href="@{/article/{id}(id=${article.id})}" th:text="${article.text}"></a></li>
         </ul>
     </div>
 

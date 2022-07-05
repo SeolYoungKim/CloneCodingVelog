@@ -2,6 +2,7 @@ package ToyProject.CloneCodingVelog.domain.repository.repositoryImpl;
 
 import ToyProject.CloneCodingVelog.domain.repository.ArticleRepository;
 import ToyProject.CloneCodingVelog.domain.writing.Article;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Repository
 public class MemoryRepository implements ArticleRepository {
 
@@ -21,6 +23,7 @@ public class MemoryRepository implements ArticleRepository {
     @Override
     public Article save(Article article) {
         repository.put(++sequence, article);
+        article.setId(sequence);
         return article;
     }
 
@@ -46,5 +49,8 @@ public class MemoryRepository implements ArticleRepository {
 
         save(article1);
         save(article2);
+
+//        log.info("article1's id = {}", article1.getId());
+//        log.info("article2's id = {}", article2.getId());
     }
 }

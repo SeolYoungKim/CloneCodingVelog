@@ -1,0 +1,44 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="css/bootstrap.min.css"
+        th:href="|@{css/bootstrap.min.css}|"
+        rel="stylesheet">
+
+  <style>
+    .container {
+      max-width: 560px;
+    }
+    .field-error {
+      border-color: #dc3545;
+      color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+
+<div th:object="${editForm}">
+
+  <form th:action method="post">
+    <h2>
+      <input th:field="*{title}" th:placeholder="*{title}">
+      <div th:errors="*{title}"></div>
+    </h2>
+
+    <div>
+      <input th:field="*{text}" th:placeholder="*{text}">
+      <div th:errors="*{text}"></div>
+    </div>
+
+    <div>
+      <button type="submit">제출하기</button>
+      <button type="button" th:onclick="|location.href='/'|">목록으로</button>
+    </div>
+  </form>
+
+</div>
+
+</body>
+</html>

@@ -1,8 +1,6 @@
 package ToyProject.CloneCodingVelog.domain.repository.repositoryImpl;
 
-import ToyProject.CloneCodingVelog.domain.repository.ArticleRepository;
 import ToyProject.CloneCodingVelog.domain.writing.Article;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MemoryRepositoryTest {
 
