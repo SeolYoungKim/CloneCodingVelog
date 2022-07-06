@@ -23,9 +23,10 @@
 
 <h2>딱구의 블로그에 오신 것을 환영합니다.</h2>
 
+
 <div class="container" th:object="${articles}">
 
-    <div th:if="${articles} == null" th:text="'글이 없습니다.'"></div>
+    <div th:if="${articles} == null" th:text="'작성된 글이 없습니다.'"></div>
 
     <div th:each="article : ${articles}">
         <ul class="container">

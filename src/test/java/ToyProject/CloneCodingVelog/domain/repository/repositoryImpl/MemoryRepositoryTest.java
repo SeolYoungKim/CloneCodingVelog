@@ -59,4 +59,31 @@ class MemoryRepositoryTest {
 
         assertThat(findAll.size()).isEqualTo(2);
     }
+
+    @Test
+    void delete() {
+        Article article1 = new Article("제목입니다", "글입니다");
+        Article article2 = new Article("제목임", "글임");
+
+        repository.save(article1);
+        repository.save(article2);
+
+        repository.delete(2L);
+
+        assertThat(repository.findAll().size()).isEqualTo(1);
+    }
+
+    @Test
+    void repositoryIsNull() {
+        Article article1 = new Article("제목입니다", "글입니다");
+        Article article2 = new Article("제목임", "글임");
+
+        repository.save(article1);
+        repository.save(article2);
+
+        repository.delete(1L);
+        repository.delete(2L);
+
+        assertThat(repository.findAll()).isEmpty();
+    }
 }

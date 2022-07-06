@@ -6,10 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -37,9 +34,15 @@ public class MemoryRepository implements ArticleRepository {
         return Optional.of(repository.get(id));
     }
 
+    /**
+     * 해당 메서드는 최신 글이 위로 올라오도록 역순으로 구성하였다.
+     * id 값에는 변동이 없으므로, 이렇게 구성해도 상관 없을 것이라고 판단하였다.
+     */
     @Override
     public List<Article> findAll() {
-        return new ArrayList<>(repository.values());
+        List<Article> articles = new ArrayList<>(repository.values());
+        Collections.reverse(articles);
+        return articles;
     }
 
     @Override
