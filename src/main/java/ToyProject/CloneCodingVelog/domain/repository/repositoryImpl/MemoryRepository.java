@@ -57,11 +57,16 @@ public class MemoryRepository implements ArticleRepository {
 
     @PostConstruct
     public void init() {
-        Article article1 = new Article("title", "text");
-        Article article2 = new Article("title2", "text2");
+        Article article1 = new Article("title", "text", "series1");
+        Article article2 = new Article("title2", "text2", "series1");
+
+        Article article3 = new Article("title3", "text3", "series2");
+        Article article4 = new Article("title4", "text4", "series2");
 
         save(article1);
         save(article2);
+        save(article3);
+        save(article4);
 
 //        log.info("article1's id = {}", article1.getId());
 //        log.info("article2's id = {}", article2.getId());

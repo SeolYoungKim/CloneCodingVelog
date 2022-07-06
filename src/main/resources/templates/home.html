@@ -23,6 +23,8 @@
 
 <h2>딱구의 블로그에 오신 것을 환영합니다.</h2>
 
+<button th:onclick="|location.href='/'|" type="button">글</button>
+<button th:onclick="|location.href='/series'|" type="button">시리즈</button>
 
 <div class="container" th:object="${articles}">
 

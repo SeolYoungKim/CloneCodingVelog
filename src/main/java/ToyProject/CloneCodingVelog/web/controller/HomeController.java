@@ -30,4 +30,10 @@ public class HomeController {
 
         return "home";
     }
+
+//    @GetMapping("/series")
+//    public String series(Model model) {
+//        //시리즈 이름이 뜨도록 해야한다.
+//        //그러려면 등록된 시리즈 이름을 조회해야 한다.
+//    }
 }

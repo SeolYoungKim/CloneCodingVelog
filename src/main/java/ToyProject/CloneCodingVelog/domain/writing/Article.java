@@ -22,8 +22,17 @@ public class Article {
     @NotBlank
     private String text;
 
+    // 글에 시리즈(그룹화) 추가
+    private String series;
+
     public Article(String title, String text) {
         this.title = title;
         this.text = text;
+    }
+
+    public Article(String title, String text, String series) {
+        this.title = title;
+        this.text = text;
+        this.series = series;
     }
 }
