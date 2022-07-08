@@ -1,6 +1,7 @@
 package ToyProject.CloneCodingVelog.web.dto;
 
 import ToyProject.CloneCodingVelog.domain.entity.ArticleEntity;
+import ToyProject.CloneCodingVelog.domain.entity.SeriesEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,13 +19,13 @@ public class AddArticleDto {
     @NotBlank
     private String text;
 
-    private String series;
+    private SeriesEntity seriesEntity;
 
     public ArticleEntity toEntity() {
         return ArticleEntity.builder()
                 .title(this.title)
                 .text(this.text)
-                .series(this.series)
+                .seriesEntity(this.seriesEntity)
                 .build();
     }
 }

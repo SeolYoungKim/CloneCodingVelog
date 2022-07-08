@@ -21,8 +21,9 @@ public class ArticleEntity {
     @Column
     private String text;
 
-    @Column
-    private String series;
+    @ManyToOne  // 다수가 한개로 매핑됨. (글이 여러개, 해당되는 시리즈가 한개)
+    @JoinColumn(name = "series_id")
+    private SeriesEntity seriesEntity;
 
     public ArticleEntity(String title, String text) {
         this.title = title;
