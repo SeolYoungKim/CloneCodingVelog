@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
+//TODO: 빌더를 따로 생성자에 적어주는게 좋다던데.. 이유를 찾아보자.
+
 @Getter
 @Builder
 @AllArgsConstructor

@@ -1,7 +1,9 @@
 package ToyProject.CloneCodingVelog.domain.entity;
 
 import ToyProject.CloneCodingVelog.domain.repository.ArticleJpaRepository;
+import ToyProject.CloneCodingVelog.domain.repository.ArticleJpaRepositorySupport;
 import ToyProject.CloneCodingVelog.domain.repository.SeriesJpaRepository;
+import org.aspectj.lang.annotation.After;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +27,9 @@ class ArticleEntityTest {
 
     @Autowired
     SeriesJpaRepository seriesJpaRepository;
+
+    @Autowired
+    ArticleJpaRepositorySupport articleJpaRepositorySupport;
 
     @Test
     @DisplayName("관계 매핑이 제대로 되었는지 확인해본다.")
@@ -42,8 +48,8 @@ class ArticleEntityTest {
                 .build();
 
         ArticleEntity articleEntity2 = ArticleEntity.builder()
-                .title("제목1")
-                .text("본문1")
+                .title("제목2")
+                .text("본문2")
                 .seriesEntity(series)
                 .build();
 
@@ -65,7 +71,7 @@ class ArticleEntityTest {
     }
 
     @Test
-    @DisplayName("관계 매핑이 제대로 되었는지 확인해본다.")
+    @DisplayName("시리즈로 글 찾기")
     @Transactional
     void findArticleBySeries() {
         //given
@@ -81,8 +87,8 @@ class ArticleEntityTest {
                 .build();
 
         ArticleEntity articleEntity2 = ArticleEntity.builder()
-                .title("제목1")
-                .text("본문1")
+                .title("제목2")
+                .text("본문2")
                 .seriesEntity(series)
                 .build();
 
@@ -92,7 +98,9 @@ class ArticleEntityTest {
         articleJpaRepository.save(articleEntity2);
 
         //then
+        List<ArticleEntity> bySeries = articleJpaRepositorySupport.findBySeries(series);  // support로 조회.
+        assertThat(bySeries.size()).isEqualTo(2);
+        assertThat(bySeries.get(0)).isEqualTo(articleEntity1);
 
     }
-
 }

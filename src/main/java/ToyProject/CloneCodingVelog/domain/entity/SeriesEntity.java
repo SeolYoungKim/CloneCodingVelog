@@ -20,6 +20,7 @@ public class SeriesEntity {
     @Column
     private String series;
 
+    @Builder.Default
     @OneToMany(mappedBy = "seriesEntity") // 한개가 다수로 매핑됨. (시리즈는 1개, 그에 해당하는 글이 여러개)
     private List<ArticleEntity> articles = new ArrayList<>();
 }
