@@ -73,7 +73,18 @@ public class ArticleController {
             return "domain/editForm";
         }
 
-        articleJpaRepository.save(editArticleDto.toEntity(id));
+        // id로 엔티티를 찾는다.
+        ArticleEntity findArticle = articleJpaRepository.findById(id).orElse(null);
+
+        // 엔티티가 널이 아니면, 엔티티 필드를 editArticleDto의 필드로 교체한다.
+        if (findArticle != null) {
+            findArticle.editArticle(
+                    editArticleDto.getTitle(),
+                    editArticleDto.getText(),
+                    editArticleDto.getSeriesEntity());
+
+            articleJpaRepository.save(findArticle);
+        }
 
         return "redirect:/";
     }

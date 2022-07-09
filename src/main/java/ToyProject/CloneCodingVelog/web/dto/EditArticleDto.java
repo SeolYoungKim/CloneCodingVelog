@@ -10,11 +10,8 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
-@RequiredArgsConstructor
 @Getter @Setter
 public class EditArticleDto {
-
-    ArticleJpaRepository articleJpaRepository;
 
     @NotBlank
     private String title;
@@ -23,13 +20,4 @@ public class EditArticleDto {
     private String text;
 
     private SeriesEntity seriesEntity;
-
-    public ArticleEntity toEntity(Long id) {
-        return ArticleEntity.builder()
-                .id(id)
-                .title(this.title)
-                .text(this.text)
-                .seriesEntity(this.seriesEntity)
-                .build();
-    }
 }
