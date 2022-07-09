@@ -1,9 +1,12 @@
 package ToyProject.CloneCodingVelog.web.controller;
 
 import ToyProject.CloneCodingVelog.domain.entity.ArticleEntity;
+import ToyProject.CloneCodingVelog.domain.entity.SeriesEntity;
 import ToyProject.CloneCodingVelog.domain.repository.ArticleJpaRepository;
+import ToyProject.CloneCodingVelog.domain.repository.SeriesJpaRepository;
 import ToyProject.CloneCodingVelog.web.dto.AddArticleDto;
 import ToyProject.CloneCodingVelog.web.dto.EditArticleDto;
+import ToyProject.CloneCodingVelog.web.dto.SeriesDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -21,6 +24,7 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleJpaRepository articleJpaRepository;
+    private final SeriesJpaRepository seriesJpaRepository;
 
     @GetMapping("/")
     public String jpaHome(Model model) {
@@ -39,19 +43,34 @@ public class ArticleController {
     @GetMapping("add")
     public String addDto(Model model) {  // th:object를 사용하고 있어서, 빈 객체라도 보내줘야 함.
         model.addAttribute("addForm", new AddArticleDto());
+        model.addAttribute("seriesForm", new SeriesDto());
         return "domain/addForm";
     }
 
     @PostMapping("add")
     public String addArticle(
             @Validated @ModelAttribute(name = "addForm") AddArticleDto addArticleDto,
-            BindingResult bindingResult) {
+            BindingResult bindingResult,
+            @ModelAttribute(name = "seriesForm") SeriesDto seriesDto
+            ) {
 
         if (bindingResult.hasErrors()) {
+            log.error("ERROR : {}", bindingResult);
             return "domain/addForm";
         }
 
-        articleJpaRepository.save(addArticleDto.toEntity());
+        ArticleEntity article = addArticleDto.toEntity();
+
+        if (seriesDto != null) {
+            
+            SeriesEntity series = seriesDto.toEntity();
+            seriesJpaRepository.save(series);
+
+            article.addSeries(series);  // article에 시리즈 객체 저장.
+            series.addArticle(article);  // 시리즈의 리스트에 아티클 저장.
+        }
+
+        articleJpaRepository.save(article);
 
         return "redirect:/";
     }

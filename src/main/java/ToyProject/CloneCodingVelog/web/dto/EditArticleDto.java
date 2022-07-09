@@ -20,4 +20,5 @@ public class EditArticleDto {
     private String text;
 
     private SeriesEntity seriesEntity;
+
 }

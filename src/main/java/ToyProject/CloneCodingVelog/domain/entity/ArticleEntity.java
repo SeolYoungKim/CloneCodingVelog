@@ -38,4 +38,8 @@ public class ArticleEntity {
         this.text = text;
         this.seriesEntity = seriesEntity;
     }
+
+    public void addSeries(SeriesEntity seriesEntity) {
+        this.seriesEntity = seriesEntity;
+    }
 }

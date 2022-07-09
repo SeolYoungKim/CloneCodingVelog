@@ -19,6 +19,12 @@
         <div th:errors="*{text}">내용을 입력하세요.</div>
     </div>
 
+    <div>
+        <label for="series">시리즈</label>
+        <input id="series" th:field="${seriesForm.series}">
+        <div th:errors="${seriesForm.series}"></div>
+    </div>
+
     <button type="submit">출간하기</button>
     <button type="button" th:onclick="|location.href='/'|">나가기</button>
 </form>
