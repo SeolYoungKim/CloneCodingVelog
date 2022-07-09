@@ -19,6 +19,4 @@ public class EditArticleDto {
     @NotBlank
     private String text;
 
-    private SeriesEntity seriesEntity;
-
 }

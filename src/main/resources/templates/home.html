@@ -28,7 +28,7 @@
 
 <div class="container" th:object="${articles}">
 
-    <div th:if="${articles} == null" th:text="'작성된 글이 없습니다.'"></div>
+    <div th:if="${#lists.isEmpty(articles)}" th:text="'작성된 글이 없습니다.'"></div>
 
     <div th:each="article : ${articles}">
         <ul class="container">

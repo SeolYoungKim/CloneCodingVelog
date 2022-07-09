@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+
+<body>
+
+<form th:action method="post">
+  <div th:object="${seriesDto}">
+    <label for="series">시리즈명을 입력하세요.</label>
+    <input id="series" th:field="*{series}">
+    <div th:errors="*{series}"></div>
+  </div>
+
+  <button type="submit">추가하기</button>
+</form>
+
+</body>
+</html>

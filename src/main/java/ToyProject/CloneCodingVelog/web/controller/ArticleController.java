@@ -4,6 +4,7 @@ import ToyProject.CloneCodingVelog.domain.entity.ArticleEntity;
 import ToyProject.CloneCodingVelog.domain.entity.SeriesEntity;
 import ToyProject.CloneCodingVelog.domain.repository.ArticleJpaRepository;
 import ToyProject.CloneCodingVelog.domain.repository.SeriesJpaRepository;
+import ToyProject.CloneCodingVelog.domain.repository.SeriesJpaRepositorySupport;
 import ToyProject.CloneCodingVelog.web.dto.AddArticleDto;
 import ToyProject.CloneCodingVelog.web.dto.EditArticleDto;
 import ToyProject.CloneCodingVelog.web.dto.SeriesDto;
@@ -25,10 +26,17 @@ public class ArticleController {
 
     private final ArticleJpaRepository articleJpaRepository;
     private final SeriesJpaRepository seriesJpaRepository;
+    private final SeriesJpaRepositorySupport seriesJpaRepositorySupport;
+
+    @ModelAttribute("seriesCategory")  // 시리즈 리포지토리의 시리즈를 목록화 후, 모델에 기본으로 저장.
+    public List<SeriesEntity> seriesCategory() {
+        return seriesJpaRepository.findAll();
+    }
 
     @GetMapping("/")
     public String jpaHome(Model model) {
         List<ArticleEntity> all = articleJpaRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        log.info("articles={}", all);
         model.addAttribute("articles", all);
         return "home";
     }
@@ -40,19 +48,19 @@ public class ArticleController {
         return "domain/articleForm";
     }
 
-    @GetMapping("add")
+    @GetMapping("/add")
     public String addDto(Model model) {  // th:object를 사용하고 있어서, 빈 객체라도 보내줘야 함.
         model.addAttribute("addForm", new AddArticleDto());
         model.addAttribute("seriesForm", new SeriesDto());
         return "domain/addForm";
     }
 
-    @PostMapping("add")
+    @PostMapping("/add")
     public String addArticle(
             @Validated @ModelAttribute(name = "addForm") AddArticleDto addArticleDto,
             BindingResult bindingResult,
             @ModelAttribute(name = "seriesForm") SeriesDto seriesDto
-            ) {
+    ) {
 
         if (bindingResult.hasErrors()) {
             log.error("ERROR : {}", bindingResult);
@@ -61,13 +69,15 @@ public class ArticleController {
 
         ArticleEntity article = addArticleDto.toEntity();
 
-        if (seriesDto != null) {
-            
-            SeriesEntity series = seriesDto.toEntity();
-            seriesJpaRepository.save(series);
+        // 시리즈 이름으로 시리즈 리포를 뒤져서 찾은 객체를 아티클에 저장해야 함.
 
-            article.addSeries(series);  // article에 시리즈 객체 저장.
-            series.addArticle(article);  // 시리즈의 리스트에 아티클 저장.
+        if (seriesDto != null) {
+            SeriesEntity series = seriesJpaRepositorySupport.findBySeries(seriesDto.getSeries());
+
+            if (series != null) {
+                article.addSeries(series);  // article에 시리즈 객체 저장.
+                series.addArticle(article);  // 시리즈의 리스트에 아티클 저장.
+            }
         }
 
         articleJpaRepository.save(article);
@@ -79,6 +89,14 @@ public class ArticleController {
     public String editDto(@PathVariable Long id, Model model) {
         ArticleEntity article = articleJpaRepository.findById(id).orElse(null);
         model.addAttribute("editForm", article);
+
+        //TODO:article의 시리즈가 미리 널이 아님을 알 수는 없을까 ?
+        if (article.getSeriesEntity() == null) {
+            model.addAttribute("seriesForm", new SeriesDto());
+        } else {
+            model.addAttribute("seriesForm", article.getSeriesEntity());
+        }
+
         return "domain/editForm";
     }
 
@@ -86,7 +104,9 @@ public class ArticleController {
     public String editArticle(
             @PathVariable Long id,
             @Validated @ModelAttribute(name = "editForm") EditArticleDto editArticleDto,
-            BindingResult bindingResult) {
+            BindingResult bindingResult,
+            @ModelAttribute(name = "seriesForm") SeriesDto seriesDto
+            ) {
 
         if (bindingResult.hasErrors()) {
             return "domain/editForm";
@@ -97,10 +117,20 @@ public class ArticleController {
 
         // 엔티티가 널이 아니면, 엔티티 필드를 editArticleDto의 필드로 교체한다.
         if (findArticle != null) {
-            findArticle.editArticle(
-                    editArticleDto.getTitle(),
-                    editArticleDto.getText(),
-                    editArticleDto.getSeriesEntity());
+            //TODO: 해당 로직 간소화가 가능한지 알아보자.
+            if (seriesDto != null) {
+                SeriesEntity series = seriesJpaRepositorySupport.findBySeries(seriesDto.getSeries());
+
+                if (series != null) {
+                    findArticle.addSeries(series);  // article에 시리즈 객체 저장.
+                    series.addArticle(findArticle);  // 시리즈의 리스트에 아티클 저장.
+                }
+
+                findArticle.editArticle(
+                        editArticleDto.getTitle(),
+                        editArticleDto.getText(),
+                        series);
+            }
 
             articleJpaRepository.save(findArticle);
         }
@@ -118,5 +148,31 @@ public class ArticleController {
     public String deleteArticle(@PathVariable Long id) {
         articleJpaRepository.findById(id).ifPresent(articleJpaRepository::delete);
         return "redirect:/";
+    }
+
+    @GetMapping("/add-series")
+    public String addSeriesForm(Model model) {
+        model.addAttribute("seriesDto", new SeriesDto());
+        return "domain/addSeries";
+    }
+
+    @PostMapping("/add-series")
+    public String addSeries(
+            @Validated @ModelAttribute SeriesDto seriesDto,
+            BindingResult bindingResult,
+            @RequestParam(defaultValue = "add") String type,
+            @RequestParam(defaultValue = "0") Long id) {
+
+        if (bindingResult.hasErrors()) {
+            return "domain/addSeries";
+        }
+
+        seriesJpaRepository.save(seriesDto.toEntity());
+
+        if (type.equals("add"))
+            return "redirect:/" + type;
+
+        return "redirect:/article/" + id + "/" + type;
+
     }
 }

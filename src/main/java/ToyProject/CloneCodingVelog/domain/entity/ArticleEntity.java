@@ -1,6 +1,7 @@
 package ToyProject.CloneCodingVelog.domain.entity;
 
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 

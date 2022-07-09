@@ -5,24 +5,44 @@
 </head>
 <body>
 
-<div th:object="${editForm}">
+<div>
 
   <form th:action method="post">
-    <h2>
-      <input th:field="*{title}">
-      <div th:errors="*{title}"></div>
-    </h2>
 
-    <div>
-      <input th:field="*{text}">
-      <div th:errors="*{text}"></div>
+    <div th:object="${editForm}" >
+      <h2>
+        <label for="title">제목</label>
+        <input id="title" th:field="*{title}">
+        <div th:errors="*{title}"></div>
+      </h2>
+
+      <div>
+        <label for="text">내용</label>
+        <input id="text" th:field="*{text}">
+        <div th:errors="*{text}"></div>
+      </div>
+    </div>
+
+    <div th:object="${seriesForm}">
+      <label for="seriesCategory">시리즈 카테고리</label>
+      <select id="seriesCategory" th:field="*{series}">
+        <option value="">==시리즈 선택(기본:선택안함)==</option>
+        <option th:each="series : ${seriesCategory}" th:value="${series.series}"
+                th:text="${series.series}">시리즈 이름</option>
+      </select>
     </div>
 
     <div>
       <button type="submit">제출하기</button>
       <button type="button" th:onclick="|location.href='/'|">목록으로</button>
     </div>
+
+    <div>
+      <button type="button" th:onclick="|location.href='/add-series?type=edit&id=' + *{id}|">시리즈 추가하기</button>
+    </div>
   </form>
+
+
 
 </div>
 
