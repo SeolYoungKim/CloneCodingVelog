@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+
+<body>
+
+<h2 th:text="|현재 시리즈 : ${series.series}|"></h2>
+
+<div th:object="${articleList}">
+
+  <div th:if="${#lists.isEmpty(articleList)}" th:text="'작성된 글이 없습니다.'"></div>
+
+  <div th:each="article : ${articleList}">
+    <ul class="container">
+      <li><a th:href="@{/article/{id}(id=${article.id})}" th:text="${article.title}"></a>
+        <a th:href="@{/article/{id}(id=${article.id})}" th:text="${article.text}"></a></li>
+    </ul>
+  </div>
+
+  <button th:onclick="|location.href='/add'|" type="button">글 작성</button>
+  <button th:onclick="|location.href='/series'|" type="button">시리즈 목록</button>
+  <div>
+    <button th:onclick="|location.href='/delete-series/' + ${series.series_id}|" type="button">시리즈 삭제하기</button>
+  </div>
+
+</div>
+
+</body>
+</html>

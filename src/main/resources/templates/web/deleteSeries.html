@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:if="${type} == 'fail'">
+    글이 존재하는 시리즈는 삭제할 수 없습니다.
+</div>
+
+<h2 th:text="|현재 시리즈는 ${series.series}입니다. 정말 삭제하시겠습니까?|">정말 삭제하시겠습니까?</h2>
+<form th:action method="post">
+    <button type="submit">확인</button>
+    <button type="button" th:onclick="|location.href='/series/' + ${series.series_id}|">취소</button>
+</form>
+
+</body>
+</html>
