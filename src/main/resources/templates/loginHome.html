@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<h2>어서오세요! 블로그입니다.</h2>
+<h3 th:text="|어서오세요. ${member.memberId}님.|">로그인을 해주세요 :)</h3>
+
+<div>
+    <button type="button" th:onclick="|location.href='/article-list'|">글 목록</button>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">로그아웃</button>
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<!--TODO: 머리 식힐 때 CSS 적용 알아보기...^^-->
+</head>
+
+<body>
+
+<h2>딱구의 블로그에 오신 것을 환영합니다.</h2> <!--TODO: OO의 블로그에 오신 것을 환영합니다로 변경. 로그인 멤버 이름으로 구분하자.-->
+
+<button th:onclick="|location.href='/'|" type="button">글</button>
+<button th:onclick="|location.href='/series'|" type="button">시리즈</button>
+
+<div th:object="${articles}">
+
+    <div th:if="${#lists.isEmpty(articles)}" th:text="'작성된 글이 없습니다.'"></div>
+
+    <div th:each="article : ${articles}">
+        <ul class="container">
+            <li><a th:href="@{/article/{id}(id=${article.id})}" th:text="${article.title}"></a>
+                <a th:href="@{/article/{id}(id=${article.id})}" th:text="${article.text}"></a></li>
+        </ul>
+    </div>
+
+    <button th:onclick="|location.href='/add'|" type="button">글 작성</button>
+
+</div>
+
+</body>
+</html>

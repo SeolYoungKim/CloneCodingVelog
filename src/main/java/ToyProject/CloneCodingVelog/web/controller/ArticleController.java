@@ -32,12 +32,14 @@ public class ArticleController {
         return seriesJpaRepository.findAll();
     }
 
-    @GetMapping("/")
-    public String jpaHome(Model model) {
+    @GetMapping("/article-list")
+    public String articleList(Model model) {
+
         List<ArticleEntity> all = articleJpaRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
         log.info("articles={}", all);
         model.addAttribute("articles", all);
-        return "home";
+
+        return "/web/articleList";
     }
 
     @GetMapping("/article/{id}")
