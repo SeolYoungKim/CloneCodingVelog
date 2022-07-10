@@ -23,7 +23,7 @@ public class SeriesEntity {
     private String series;
 
     @Builder.Default
-    @OneToMany(mappedBy = "seriesEntity", cascade = CascadeType.ALL) // 한개가 다수로 매핑됨. (시리즈는 1개, 그에 해당하는 글이 여러개)
+    @OneToMany(mappedBy = "seriesEntity", cascade = CascadeType.PERSIST) // 한개가 다수로 매핑됨. (시리즈는 1개, 그에 해당하는 글이 여러개)
     private List<ArticleEntity> articles = new ArrayList<>();
 
     //setter를 쓰지 않기 위한 방안
