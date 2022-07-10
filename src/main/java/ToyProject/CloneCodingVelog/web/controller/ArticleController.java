@@ -26,7 +26,6 @@ public class ArticleController {
 
     private final ArticleJpaRepository articleJpaRepository;
     private final SeriesJpaRepository seriesJpaRepository;
-    private final SeriesJpaRepositorySupport seriesJpaRepositorySupport;
 
     @ModelAttribute("seriesCategory")  // 시리즈 리포지토리의 시리즈를 목록화 후, 모델에 기본으로 저장.
     public List<SeriesEntity> seriesCategory() {
@@ -72,7 +71,7 @@ public class ArticleController {
         // 시리즈 이름으로 시리즈 리포를 뒤져서 찾은 객체를 아티클에 저장해야 함.
 
         if (seriesDto != null) {
-            SeriesEntity series = seriesJpaRepositorySupport.findBySeries(seriesDto.getSeries());
+            SeriesEntity series = seriesJpaRepository.findBySeries(seriesDto.getSeries());
 
             if (series != null) {
                 article.addSeries(series);  // article에 시리즈 객체 저장.
@@ -118,7 +117,7 @@ public class ArticleController {
         // 엔티티가 널이 아니면, 엔티티 필드를 editArticleDto의 필드로 교체한다.
         if (findArticle != null && seriesDto != null) {
             //TODO: 해당 로직 간소화가 가능한지 알아보자.
-            SeriesEntity series = seriesJpaRepositorySupport.findBySeries(seriesDto.getSeries());
+            SeriesEntity series = seriesJpaRepository.findBySeries(seriesDto.getSeries());
 
             if (series != null) {
                 findArticle.addSeries(series);  // article에 시리즈 객체 저장.
