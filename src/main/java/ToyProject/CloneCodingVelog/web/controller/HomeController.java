@@ -22,12 +22,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+import static ToyProject.CloneCodingVelog.web.SessionConst.LOGIN_MEMBER;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
-
-    public static final String LOGIN_MEMBER = "loginMember";
 
     private final ArticleJpaRepository articleJpaRepository;
     private final MemberRepository memberRepository;
