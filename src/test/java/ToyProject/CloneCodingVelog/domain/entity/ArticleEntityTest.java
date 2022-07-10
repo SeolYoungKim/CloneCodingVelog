@@ -1,23 +1,18 @@
 package ToyProject.CloneCodingVelog.domain.entity;
 
-import ToyProject.CloneCodingVelog.domain.repository.ArticleJpaRepository;
-import ToyProject.CloneCodingVelog.domain.repository.ArticleJpaRepositorySupport;
-import ToyProject.CloneCodingVelog.domain.repository.SeriesJpaRepository;
-import org.aspectj.lang.annotation.After;
-import org.assertj.core.api.Assertions;
+import ToyProject.CloneCodingVelog.domain.repository.article.ArticleJpaRepository;
+import ToyProject.CloneCodingVelog.domain.repository.article.ArticleJpaRepositorySupport;
+import ToyProject.CloneCodingVelog.domain.repository.series.SeriesJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ArticleEntityTest {

@@ -1,4 +1,4 @@
-package ToyProject.CloneCodingVelog.domain.repository;
+package ToyProject.CloneCodingVelog.domain.repository.series;
 
 import ToyProject.CloneCodingVelog.domain.entity.SeriesEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

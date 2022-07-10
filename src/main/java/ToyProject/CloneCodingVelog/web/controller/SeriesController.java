@@ -2,32 +2,52 @@ package ToyProject.CloneCodingVelog.web.controller;
 
 import ToyProject.CloneCodingVelog.domain.entity.ArticleEntity;
 import ToyProject.CloneCodingVelog.domain.entity.SeriesEntity;
-import ToyProject.CloneCodingVelog.domain.repository.ArticleJpaRepository;
-import ToyProject.CloneCodingVelog.domain.repository.ArticleJpaRepositorySupport;
-import ToyProject.CloneCodingVelog.domain.repository.SeriesJpaRepository;
-import ToyProject.CloneCodingVelog.domain.repository.SeriesJpaRepositorySupport;
+import ToyProject.CloneCodingVelog.domain.repository.article.ArticleJpaRepository;
+import ToyProject.CloneCodingVelog.domain.repository.series.SeriesJpaRepository;
+import ToyProject.CloneCodingVelog.web.dto.SeriesDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class SeriesController {
 
-    private final ArticleJpaRepositorySupport articleJpaRepositorySupport;
+    private final ArticleJpaRepository articleJpaRepository;
     private final SeriesJpaRepository seriesJpaRepository;
+
+    @GetMapping("/add-series")
+    public String addSeriesForm(Model model) {
+        model.addAttribute("seriesDto", new SeriesDto());
+        return "domain/addSeries";
+    }
+
+    @PostMapping("/add-series")
+    public String addSeries(
+            @Validated @ModelAttribute SeriesDto seriesDto,
+            BindingResult bindingResult,
+            @RequestParam(defaultValue = "add") String type,
+            @RequestParam(defaultValue = "0") Long id) {
+
+        if (bindingResult.hasErrors()) {
+            return "domain/addSeries";
+        }
+
+        seriesJpaRepository.save(seriesDto.toEntity());
+
+        if (type.equals("add"))
+            return "redirect:/" + type;
+
+        return "redirect:/article/" + id + "/" + type;
+
+    }
 
     @GetMapping("/series")
     public String seriesForm(Model model) {
@@ -39,7 +59,7 @@ public class SeriesController {
     @GetMapping("/series/{id}")
     public String intoSeriesForm(@PathVariable Long id, Model model) {
         SeriesEntity series = seriesJpaRepository.findById(id).orElse(null);
-        List<ArticleEntity> articleList = articleJpaRepositorySupport.findBySeries(series);
+        List<ArticleEntity> articleList = articleJpaRepository.findBySeries(series);
         model.addAttribute("articleList", articleList);
         model.addAttribute("series", series);
 

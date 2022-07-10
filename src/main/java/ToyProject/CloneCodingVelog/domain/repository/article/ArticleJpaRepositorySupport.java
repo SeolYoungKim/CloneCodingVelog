@@ -1,4 +1,4 @@
-package ToyProject.CloneCodingVelog.domain.repository;
+package ToyProject.CloneCodingVelog.domain.repository.article;
 
 import ToyProject.CloneCodingVelog.domain.entity.ArticleEntity;
 import ToyProject.CloneCodingVelog.domain.entity.SeriesEntity;
@@ -12,7 +12,7 @@ import static ToyProject.CloneCodingVelog.domain.entity.QArticleEntity.articleEn
 
 //TODO: 이게 왜 되는지 알기.. 아직 포린키와.. 등등.. 정확히 알지못한다..
 
-@Repository
+//@Repository
 public class ArticleJpaRepositorySupport extends QuerydslRepositorySupport {
 
     private final JPAQueryFactory queryFactory;

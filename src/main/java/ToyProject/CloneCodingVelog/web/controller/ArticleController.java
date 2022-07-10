@@ -2,9 +2,9 @@ package ToyProject.CloneCodingVelog.web.controller;
 
 import ToyProject.CloneCodingVelog.domain.entity.ArticleEntity;
 import ToyProject.CloneCodingVelog.domain.entity.SeriesEntity;
-import ToyProject.CloneCodingVelog.domain.repository.ArticleJpaRepository;
-import ToyProject.CloneCodingVelog.domain.repository.SeriesJpaRepository;
-import ToyProject.CloneCodingVelog.domain.repository.SeriesJpaRepositorySupport;
+import ToyProject.CloneCodingVelog.domain.repository.article.ArticleJpaRepository;
+import ToyProject.CloneCodingVelog.domain.repository.series.SeriesJpaRepository;
+import ToyProject.CloneCodingVelog.domain.repository.series.SeriesJpaRepositorySupport;
 import ToyProject.CloneCodingVelog.web.dto.AddArticleDto;
 import ToyProject.CloneCodingVelog.web.dto.EditArticleDto;
 import ToyProject.CloneCodingVelog.web.dto.SeriesDto;
@@ -116,21 +116,19 @@ public class ArticleController {
         ArticleEntity findArticle = articleJpaRepository.findById(id).orElse(null);
 
         // 엔티티가 널이 아니면, 엔티티 필드를 editArticleDto의 필드로 교체한다.
-        if (findArticle != null) {
+        if (findArticle != null && seriesDto != null) {
             //TODO: 해당 로직 간소화가 가능한지 알아보자.
-            if (seriesDto != null) {
-                SeriesEntity series = seriesJpaRepositorySupport.findBySeries(seriesDto.getSeries());
+            SeriesEntity series = seriesJpaRepositorySupport.findBySeries(seriesDto.getSeries());
 
-                if (series != null) {
-                    findArticle.addSeries(series);  // article에 시리즈 객체 저장.
-                    series.addArticle(findArticle);  // 시리즈의 리스트에 아티클 저장.
-                }
-
-                findArticle.editArticle(
-                        editArticleDto.getTitle(),
-                        editArticleDto.getText(),
-                        series);
+            if (series != null) {
+                findArticle.addSeries(series);  // article에 시리즈 객체 저장.
+                series.addArticle(findArticle);  // 시리즈의 리스트에 아티클 저장.
             }
+
+            findArticle.editArticle(
+                    editArticleDto.getTitle(),
+                    editArticleDto.getText(),
+                    series);
 
             articleJpaRepository.save(findArticle);
         }
@@ -150,29 +148,5 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/add-series")
-    public String addSeriesForm(Model model) {
-        model.addAttribute("seriesDto", new SeriesDto());
-        return "domain/addSeries";
-    }
 
-    @PostMapping("/add-series")
-    public String addSeries(
-            @Validated @ModelAttribute SeriesDto seriesDto,
-            BindingResult bindingResult,
-            @RequestParam(defaultValue = "add") String type,
-            @RequestParam(defaultValue = "0") Long id) {
-
-        if (bindingResult.hasErrors()) {
-            return "domain/addSeries";
-        }
-
-        seriesJpaRepository.save(seriesDto.toEntity());
-
-        if (type.equals("add"))
-            return "redirect:/" + type;
-
-        return "redirect:/article/" + id + "/" + type;
-
-    }
 }

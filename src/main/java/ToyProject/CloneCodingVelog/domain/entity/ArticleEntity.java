@@ -22,7 +22,7 @@ public class ArticleEntity {
     @Column
     private String text;
 
-    @ManyToOne  // 다수가 한개로 매핑됨. (글이 여러개, 해당되는 시리즈가 한개)
+    @ManyToOne(cascade = CascadeType.ALL)  // 다수가 한개로 매핑됨. (글이 여러개, 해당되는 시리즈가 한개)
     @JoinColumn(name = "series_id")
     private SeriesEntity seriesEntity;
 
