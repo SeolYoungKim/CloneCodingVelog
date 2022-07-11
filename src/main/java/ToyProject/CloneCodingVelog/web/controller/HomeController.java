@@ -95,7 +95,14 @@ public class HomeController {
             return "domain/addMember";
         }
 
-         memberRepository.save(addMemberDto.toEntity());
+        //회원 아이디 중복 방지
+        MemberEntity findByMemberId = memberRepository.findByMemberId(addMemberDto.getMemberId());
+        if (findByMemberId == null) {
+            memberRepository.save(addMemberDto.toEntity());
+        } else {
+            bindingResult.rejectValue("memberId", "", "중복된 아이디입니다.");
+            return "domain/addMember";
+        }
 
         return "redirect:/";
     }

@@ -83,7 +83,7 @@ public class ArticleController {
 
         articleJpaRepository.save(article);
 
-        return "redirect:/";
+        return "redirect:/article-list";
     }
 
     @GetMapping("/article/{id}/edit")
@@ -134,7 +134,7 @@ public class ArticleController {
             articleJpaRepository.save(findArticle);
         }
 
-        return "redirect:/";
+        return "redirect:/article-list";
     }
 
     @GetMapping("/article/{id}/delete")
@@ -146,7 +146,7 @@ public class ArticleController {
     @PostMapping("/article/{id}/delete")
     public String deleteArticle(@PathVariable Long id) {
         articleJpaRepository.findById(id).ifPresent(articleJpaRepository::delete);
-        return "redirect:/";
+        return "redirect:/article-list";
     }
 
 
